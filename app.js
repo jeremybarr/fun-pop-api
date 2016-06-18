@@ -13,6 +13,10 @@ var users = require('./routes/user');
 
 var app = express();
 
+
+var pg = require("pg");
+
+
 var env = process.env.NODE_ENV || 'development';
 app.locals.ENV = env;
 app.locals.ENV_DEVELOPMENT = env == 'development';
@@ -35,6 +39,24 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
+
+app.post('/save', function(req,res) {
+    var event_name = req.body.name;
+    var desc = req.body.desc;
+    var creator = req.body.creator;
+    var current = req.body.current;
+    var target = req.body.target;
+    var url = req.body.url;
+
+
+    console.log("event name: "+event_name);
+
+
+
+
+    res.send("success");
+
+});
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
