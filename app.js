@@ -74,6 +74,38 @@ app.post('/save', function(req,res) {
 
 });
 
+
+app.get('/events',function(req,res) {
+    var client = new pg.Client(conString);
+		client.connect();
+
+        var query = client.query('select * from events',function(err, result){
+		if(err)
+		{
+			console.log("error querying events");
+			res.send("WOOOPS");
+		}
+		else
+		{
+			console.log("perfect");
+            res.json(result.rows);
+			// if(result.rows.length >0)
+			// {
+			// 	console.log("Successful login");
+			// 	// console.log(result.rows[1].name);
+			// 	req.session.fname = result.rows[0].name;
+			// 	req.session.phone_number = phone_number;
+			// 	res.json({"success":true,"redirectURL":"/view"});
+			// 	// console.log(JSON.stringify(result.rows,null,2));
+			// }
+			// else
+			// {
+			// 	res.json({"success":false,"msg":"Invalid credentials"});
+			// }
+		}
+	});
+});
+
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
