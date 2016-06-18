@@ -16,6 +16,9 @@ var app = express();
 
 var pg = require("pg");
 
+var conString = "pg://shiv:root@localhost:5432/funpop";
+
+var client = new pg.Client(conString);
 
 var env = process.env.NODE_ENV || 'development';
 app.locals.ENV = env;
@@ -51,10 +54,23 @@ app.post('/save', function(req,res) {
 
     console.log("event name: "+event_name);
 
+        var client = new pg.Client(conString);
+		client.connect();
+			
+		client.query("insert into events(name,description,creator,current,target,url) values ($1,$2,$3,$4,$5,$6)", [event_name,desc,creator, current, target, url], function(err) {
+            if(err)
+            {
+                console.log("Error inserting");
+                res.send("fail");
+            }
+            else
+            {
+                console.log("Success");
+                res.send("success");
+            }
+        });
 
-
-
-    res.send("success");
+			
 
 });
 
